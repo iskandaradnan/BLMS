@@ -1,0 +1,151 @@
+﻿@model IEnumerable<BLMS.Models.Admin.Category>
+
+@{
+    ViewData["Title"] = "License Type";
+}
+
+<section class="section align-baseline">
+    <!-- Grid row -->
+    <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-12">
+            <div class="card card-cascade cascading-admin-card user-card">
+                <!-- Card Data -->
+                <div class="admin-up d-flex justify-content-start">
+                    <i class="fas fa fa-id-card info-color py-4 mr-3 z-depth-2"></i>
+                    <div class="data">
+                        <h5 class="font-weight-bold dark-grey-text">
+                            License Type
+                        </h5>
+                    </div>
+                </div>
+                <!-- Card Data -->
+                <!-- Card content -->
+                <div class="card-body card-body-cascade">
+                    <!-- Grid row -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="alert" class="form-group">
+                                @Html.Raw(@ViewBag.Alert)
+                            </div>
+
+                            <div class="table table-wrapper table-responsive-sm">
+                                <!--Table-->
+                                <table id="Category" class="table table-hover mb-0">
+                                    <!-- Table head -->
+                                    <thead>
+                                        <tr>
+                                            <th class="text-sm font-weight-bold align-text-top col-md-2">
+                                                @Html.DisplayNameFor(model => model.CategoryName)
+                                            </th>
+                                            <th class="text-sm font-weight-bold align-text-top col-md-8">
+                                                @Html.DisplayNameFor(model => model.Description)
+                                            </th>
+                                            <th class="text-sm font-weight-bold align-text-top col-md-2 text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <!-- Table head -->
+                                    <!-- Table body -->
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr id="row_@item.CategoryID">
+                                                <td scope="row" class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayFor(modelItem => item.CategoryName)
+                                                </td>
+                                                <td scope="row" class="text-sm align-text-top col-md-8">
+                                                    @Html.DisplayFor(modelItem => item.Description)
+                                                </td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-outline-primary btn-rounded btn-sm px-2" href="@Url.Action("Edit", "Category", new {id=item.CategoryID})">
+                                                        <i class="fas fa-pencil-alt mt-0"></i>
+                                                    </a>
+                                                    <a class="btn btn-outline-danger btn-rounded btn-sm px-2" href="#" onclick="ConfirmDelete(@item.CategoryID)">
+                                                        <i class="fas fa-trash-alt mt-0"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <!-- Table body -->
+                                </table>
+                                <!-- Table -->
+                                <!--Delete bootstrap confirmation box-->
+                                <div class="modal fade top" id="delete-conformation" aria-labelledby="delete-conformation" aria-hidden="true" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog modal-frame modal-top modal-notify modal-danger">
+                                        <div class="modal-content">
+                                            <div class="modal-header flex-column">
+                                                <div class="icon-box">
+                                                    <i class="material-icons">&#xE5CD;</i>
+                                                </div>
+                                                <h4 class="modal-title w-100 font-weight-bolder text-center text-white">DELETE LICENSE TYPE?</h4>
+                                                <br />
+                                                <p class="mb-1 align-self-sm-center text-white" style="color: red;"><i class="fas fa-exclamation-circle"></i> The saved data will be permanently deleted from BLMS database.</p>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+                                            <div class="modal-footer justify-content-center">
+                                                <button type="button" class="btn btn-outline-info waves-effect" data-dismiss="modal">Cancel</button>
+                                                <a href="#" class="btn btn-outline-danger waves-effect" onclick="DeleteCategory()"><i class="far fa fa-eraser ml-1 text-black"></i> Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*hidden field for storing current employeeId*@
+                                <input type="hidden" id="hidCategoryId" />
+
+                                <a asp-action="Create" class="btn btn-outline-success btn-block text-white text-sm font-weight-bold waves-effect"><i class="far fa fa-plus ml-1 text-black"></i> Create License Type</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Grid row -->
+                </div>
+                <!-- Card content -->
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        var ConfirmDelete = function (CategoryId) {
+
+            $("#hidCategoryId").val(CategoryId);
+            $("#delete-conformation").modal('show');
+        }
+
+        var DeleteCategory = function () {
+            var CategoryId = $("#hidCategoryId").val();
+
+            $.ajax({
+
+                type: "POST",
+                url: '@Url.Action("Delete", "Category")',
+                dataType: "json",
+                data: { Id: CategoryId },
+                success: function (result) {
+                    $("#delete-conformation").modal("hide");
+                    $("#row_" + CategoryId).remove();
+                    window.location.href =  '@Url.Action("Index", "Category")'
+                }
+            })
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#Category').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+        });
+
+        //auto hide viewbag.alert
+        $(document).ready(function () {
+            setTimeout(function () {
+                $("#alert").fadeOut();
+            }, 3000);
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

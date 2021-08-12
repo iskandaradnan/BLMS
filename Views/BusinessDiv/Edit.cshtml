@@ -1,0 +1,77 @@
+﻿@model BLMS.Models.Admin.BusinessDiv
+
+@{
+    ViewData["Title"] = "Edit Business Division";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="mt-md-4 pt-md-2 mb-5 pb-5">
+    <!-- Grid row -->
+    <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-12">
+            <div class="card card-cascade cascading-admin-card user-card">
+                <!-- Card Data -->
+                <div class="admin-up d-flex justify-content-start">
+                    <i class="fas fa fa-university info-color py-4 mr-3 z-depth-2"></i>
+                    <div class="data">
+                        <h5 class="font-weight-bold dark-grey-text">
+                            Edit Business Division
+                        </h5>
+                    </div>
+                </div>
+                <!-- Card Data -->
+                <!-- Card content -->
+                <div class="card-body card-body-cascade">
+                    <!-- Grid row -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form asp-action="Edit" autocomplete="off">
+                                <div id="alert" class="form-group">
+                                    @Html.Raw(@ViewBag.Alert)
+                                </div>
+
+                                <!-- Grid column -->
+                                <div class="col-md-12 mb-4">
+                                    <div class="form-group">
+                                        <div class="md-form" hidden>
+                                            <input asp-for="DivID" onkeyup="this.value=this.value.toUpperCase()" class="form-control" placeholder="Type New Business Division">
+                                            <label asp-for="DivID" class="control-label"><span style="color:red;">*</span>Business Division</label>
+                                            <span asp-validation-for="DivID" class="text-danger text-sm"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="md-form" hidden>
+                                            <input asp-for="OldDivName" onkeyup="this.value=this.value.toUpperCase()" class="form-control" placeholder="Type New Business Division">
+                                            <label asp-for="OldDivName" class="control-label"><span style="color:red;">*</span>Business Division</label>
+                                            <span asp-validation-for="OldDivName" class="text-danger text-sm"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="md-form">
+                                            <input asp-for="DivName" onkeyup="this.value=this.value.toUpperCase()" class="form-control" placeholder="Type New Business Division">
+                                            <label asp-for="DivName" class="control-label"><span style="color:red;">*</span>Business Division</label>
+                                            <span asp-validation-for="DivName" class="text-danger text-sm"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="submit" value="Edit" class="btn btn-outline-primary waves-effect" />
+                                        <a asp-action="Index" class="btn btn-outline-success waves-effect">Back</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

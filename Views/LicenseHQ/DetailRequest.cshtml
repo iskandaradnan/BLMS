@@ -1,0 +1,188 @@
+﻿@model BLMS.Models.License.LicenseHQ
+
+@{
+    ViewData["Title"] = "View HQ License (Request)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="mt-md-4 pt-md-2 mb-5 pb-5">
+    <!-- Grid row -->
+    <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-12">
+            <div class="card card-cascade cascading-admin-card user-card">
+                <!-- Card Data -->
+                <div class="admin-up d-flex justify-content-start">
+                    <i class="fas fa fa-building info-color py-4 mr-3 z-depth-2"></i>
+                    <div class="data">
+                        <h5 class="font-weight-bold dark-grey-text">
+                            View HQ License (Request)
+                        </h5>
+                    </div>
+                </div>
+                <!-- Card Data -->
+                <!-- Card content -->
+                <div class="card-body card-body-cascade">
+                    <!-- Grid row -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form asp-action="Create" autocomplete="off" method="post" enctype="multipart/form-data">
+                                <div class="list-group list-group-flush">
+                                    <div class="container">
+                                        <h5 class="font-weight-bold dark-grey-text">
+                                            <i class="fas fa fa-clipboard-list"> License Details</i>
+                                        </h5>
+
+                                        <div class="list-group-item col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="md-form form-sm mb-0" hidden>
+                                                        <input asp-for="LicenseID" onkeyup="this.value=this.value.toUpperCase()" class="form-control">
+                                                        <label asp-for="LicenseID" class="control-label"><span style="color:red;">*</span> License ID</label>
+                                                        <span asp-validation-for="LicenseID" class="text-danger text-sm"></span>
+                                                    </div>
+
+                                                    <div class="md-form form-sm mb-0">
+                                                        <input asp-for="LicenseName" onkeyup="this.value=this.value.toUpperCase()" class="form-control" onkeydown="return false">
+                                                        <label asp-for="LicenseName" class="control-label"><span style="color:red;">*</span> License Name</label>
+                                                        <span asp-validation-for="LicenseName" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <input asp-for="CategoryName" onkeyup="this.value=this.value.toUpperCase()" class="form-control" onkeydown="return false">
+                                                        <label asp-for="CategoryName" class="control-label"><span style="color:red;">*</span> License Type</label>
+                                                        <span asp-validation-for="CategoryName" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <input asp-for="DivName" onkeyup="this.value=this.value.toUpperCase()" class="form-control" onkeydown="return false">
+                                                        <label asp-for="DivName" class="control-label"><span style="color:red;">*</span> Business Division</label>
+                                                        <span asp-validation-for="DivName" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <input asp-for="UnitName" onkeyup="this.value=this.value.toUpperCase()" class="form-control" onkeydown="return false">
+                                                        <label asp-for="UnitName" class="control-label"><span style="color:red;">*</span> Business Unit</label>
+                                                        <span asp-validation-for="UnitName" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br />
+
+                                <div class="list-group list-group-flush">
+                                    <div class="container">
+                                        <h5 class="font-weight-bold dark-grey-text">
+                                            <i class="fas fa fa-users"> Person in Charge</i>
+                                        </h5>
+
+                                        <div class="list-group-item col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <input asp-for="PIC1Name" class="form-control" onkeydown="return false">
+                                                        <label asp-for="PIC1Name" class="control-label"><span style="color:red;">*</span> PIC 1 Name</label>
+                                                        <span asp-validation-for="PIC1Name" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <input asp-for="PIC2Name" class="form-control" onkeydown="return false">
+                                                        <label asp-for="PIC2Name" class="control-label"><span style="color:red;">*</span> PIC 2 Name</label>
+                                                        <span asp-validation-for="PIC2Name" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <input asp-for="PIC3Name" class="form-control" onkeydown="return false">
+                                                        <label asp-for="PIC3Name" class="control-label"><span style="color:red;">*</span> PIC 1 Name</label>
+                                                        <span asp-validation-for="PIC3Name" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br />
+
+                                <div class="list-group list-group-flush">
+                                    <div class="container">
+                                        <h5 class="font-weight-bold dark-grey-text">
+                                            <i class="fas fa fa-info-circle"> Remarks</i>
+                                        </h5>
+
+                                        <div class="list-group-item col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <textarea asp-for="Remarks" rows="5" onkeyup="this.value=this.value.toUpperCase()" class="md-textarea form-control" onkeydown="return false"></textarea>
+                                                        <label asp-for="Remarks" class="control-label">Remarks</label>
+                                                        <span asp-validation-for="Remarks" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br />
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <a asp-action="Index" class="btn btn-outline-success waves-effect">Back</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $('.mdb-select').materialSelect();
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $("#ddlDivName").change(function () {
+                $.getJSON('@Url.Content("~/LicenseHQ/JSONGetUnitName")', { DivID: $("#ddlDivName").val() }, function (d) {
+                    var row = "";
+                    $("#ddlUnitName").empty();
+                    items = "<option value='0'>Please select Business Unit</option>";
+                    $.each(d, function (i, item) {
+                        items += "<option value=" + item.value + ">" + item.text + "</option>";
+                    });
+                    $("#ddlUnitName").html(items);
+                })
+            })
+        })
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

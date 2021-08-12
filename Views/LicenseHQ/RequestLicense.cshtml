@@ -1,0 +1,208 @@
+﻿@model BLMS.Models.License.LicenseHQ
+
+@{
+    ViewData["Title"] = "Request HQ License";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="mt-md-4 pt-md-2 mb-5 pb-5">
+    <!-- Grid row -->
+    <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-12">
+            <div class="card card-cascade cascading-admin-card user-card">
+                <!-- Card Data -->
+                <div class="admin-up d-flex justify-content-start">
+                    <i class="fas fa fa-building info-color py-4 mr-3 z-depth-2"></i>
+                    <div class="data">
+                        <h5 class="font-weight-bold dark-grey-text">
+                            Request HQ License
+                        </h5>
+                    </div>
+                </div>
+                <!-- Card Data -->
+                <!-- Card content -->
+                <div class="card-body card-body-cascade">
+                    <!-- Grid row -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form asp-action="Create" autocomplete="off" method="post" enctype="multipart/form-data">
+                                <div class="row">
+                                    <!-- Grid column -->
+                                    <div class="col-md-12">
+                                        <div id="alert" class="form-group">
+                                            @Html.Raw(@ViewBag.Alert)
+                                        </div>
+                                    </div>
+                                    <!-- Grid column -->
+                                </div>
+
+                                <div class="list-group list-group-flush">
+                                    <div class="container">
+                                        <h5 class="font-weight-bold dark-grey-text">
+                                            <i class="fas fa fa-clipboard-list"> License Details</i>
+                                        </h5>
+
+                                        <div class="list-group-item col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <input asp-for="LicenseName" onkeyup="this.value=this.value.toUpperCase()" class="form-control" placeholder="Type New License Name">
+                                                        <label asp-for="LicenseName" class="control-label"><span style="color:red;">*</span> License Name</label>
+                                                        <span asp-validation-for="LicenseName" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <select asp-for="CategoryID"
+                                                                class="mdb-select md-form colorful-select dropdown-primary"
+                                                                asp-items="@(new SelectList(@ViewBag.ListofCategory,"CategoryID", "CategoryName"))">
+                                                        </select>
+                                                        <label asp-for="CategoryName" class="mdb-main-label" for="RoleID"><span style="color:red;">*</span> License Type</label>
+                                                        <span asp-validation-for="CategoryName" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <select id="ddlDivName" asp-for="DivID"
+                                                                class="mdb-select md-form colorful-select dropdown-primary"
+                                                                asp-items="@(new SelectList(@ViewBag.ListofBusinessDiv,"DivID", "DivName"))">
+                                                        </select>
+                                                        <label asp-for="DivName" class="mdb-main-label" for="RoleID"><span style="color:red;">*</span> Business Division</label>
+                                                        <span asp-validation-for="DivName" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <select id="ddlUnitName" asp-for="UnitID"
+                                                                class="mdb-select md-form colorful-select dropdown-primary"
+                                                                asp-items="@(new SelectList(@ViewBag.ListofBusinessUnit,"UnitID", "UnitName"))">
+                                                        </select>
+                                                        <label asp-for="UnitName" class="mdb-main-label" for="RoleID"><span style="color:red;">*</span> Business Unit</label>
+                                                        <span asp-validation-for="UnitName" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br />
+
+                                <div class="list-group list-group-flush">
+                                    <div class="container">
+                                        <h5 class="font-weight-bold dark-grey-text">
+                                            <i class="fas fa fa-users"> Person in Charge</i>
+                                        </h5>
+
+                                        <div class="list-group-item col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <input asp-for="PIC1Name" class="form-control" value="@User.Identity.Name" onkeydown="return false">
+                                                        <label asp-for="PIC1Name" class="control-label"><span style="color:red;">*</span> PIC 1 Name</label>
+                                                        <span asp-validation-for="PIC1Name" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <select asp-for="PIC2StaffNo"
+                                                                class="mdb-select md-form colorful-select dropdown-primary"
+                                                                asp-items="@(new SelectList(@ViewBag.ListofPIC2,"PIC2StaffNo", "PIC2Name"))">
+                                                        </select>
+                                                        <label asp-for="PIC2Name" class="mdb-main-label" for="RoleID">PIC 2 Name (Optional)</label>
+                                                        <span asp-validation-for="PIC2Name" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <select asp-for="PIC3StaffNo"
+                                                                class="mdb-select md-form colorful-select dropdown-primary"
+                                                                asp-items="@(new SelectList(@ViewBag.ListofPIC3,"PIC3StaffNo", "PIC3Name"))">
+                                                        </select>
+                                                        <label asp-for="PIC3Name" class="mdb-main-label" for="RoleID">PIC 3 Name (Optional)</label>
+                                                        <span asp-validation-for="PIC3Name" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br />
+
+                                <div class="list-group list-group-flush">
+                                    <div class="container">
+                                        <h5 class="font-weight-bold dark-grey-text">
+                                            <i class="fas fa fa-info-circle"> Remarks</i>
+                                        </h5>
+
+                                        <div class="list-group-item col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="md-form form-sm mb-0">
+                                                        <textarea asp-for="Remarks" rows="5" onkeyup="this.value=this.value.toUpperCase()" class="md-textarea form-control" placeholder="Type Remarks"></textarea>
+                                                        <label asp-for="Remarks" class="control-label">Remarks</label>
+                                                        <span asp-validation-for="Remarks" class="text-danger text-sm"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br />
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="Request" asp-action="RequestLicense" class="btn btn-outline-primary waves-effect" />
+                                            <a asp-action="Index" class="btn btn-outline-success waves-effect">Back</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $('.mdb-select').materialSelect();
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $("#ddlDivName").change(function () {
+                $.getJSON('@Url.Content("~/LicenseHQ/JSONGetUnitName")', { DivID: $("#ddlDivName").val() }, function (d) {
+                    var row = "";
+                    $("#ddlUnitName").empty();
+                    items = "<option value='0'>Please select Business Unit</option>";
+                    $.each(d, function (i, item) {
+                        items += "<option value=" + item.value + ">" + item.text + "</option>";
+                    });
+                    $("#ddlUnitName").html(items);
+                })
+            })
+        })
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
