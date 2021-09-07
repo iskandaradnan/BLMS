@@ -155,12 +155,13 @@ namespace BLMS.Controllers
         [Authorize(AccessLevel.ADMINISTRATION)]
         public JsonResult Delete(int Id)
         {
+            string UserName = User.Identity.Name;
 
             try
             {
                 CertBody certBody = dbContext.GetCertBodyByID(Id);
 
-                dbContext.DeleteCertBody(Id);
+                dbContext.DeleteCertBody(Id, certBody.CertBodyName, UserName);
                 TempData["deleteMessage"] = string.Format("{0} has been deleted from BLMS database!", certBody.CertBodyName);
 
                 return Json(new { status = "Success" });

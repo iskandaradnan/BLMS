@@ -1,4 +1,6 @@
 ﻿using BLMS.Models.Admin;
+using BLMS.v2.Context;
+using BLMS.v2.Models.Admin;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,6 +14,8 @@ namespace BLMS.Context
     {
         //readonly string connectionstring = "Data Source=EGBS11N10043471;Database=BLMS;User ID = sa; Password=P@ss1234; Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         readonly string connectionstring = "Data Source = 10.249.1.125; Database=BLMSDev;User ID = Appsa; Password=Opuswebsql2017;Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        readonly AuditLogDbContext auditDbContext = new AuditLogDbContext();
+
 
         #region BUSINESS DIVISION
         #region GRIDVIEW
@@ -218,6 +222,11 @@ namespace BLMS.Context
         #region CREATE
         public void AddBusinessUnit(BusinessUnit businessUnit, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "CREATE";
+            auditLog.ScreenPath = "BUSINESS UNIT";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -229,6 +238,12 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("HoCName", businessUnit.HoCName);
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = "-";
+                auditLog.NewValue = "DivID: " + businessUnit.DivID + ",\nUnit Name:" + businessUnit.UnitName + ",\nHoC Name:" + businessUnit.HoCName;
+
+                auditDbContext.AddAuditLog(auditLog);
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -238,6 +253,12 @@ namespace BLMS.Context
         #region EDIT
         public void EditBusinessUnit(BusinessUnit businessUnit, string UserName)
         {
+
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "UPDATE";
+            auditLog.ScreenPath = "BUSINESS UNIT";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -250,6 +271,12 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("HoCName", businessUnit.HoCName);
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = businessUnit.OldUnitName;
+                auditLog.NewValue = "DivID: " + businessUnit.DivID + ",\nUnit Name:" + businessUnit.UnitName + ",\nHoC Name:" + businessUnit.HoCName;
+
+                auditDbContext.AddAuditLog(auditLog);
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -257,8 +284,13 @@ namespace BLMS.Context
         #endregion
 
         #region DELETE
-        public void DeleteBusinessUnit(int? id)
+        public void DeleteBusinessUnit(int? id, string UnitName, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "DELETE";
+            auditLog.ScreenPath = "BUSINESS UNIT";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -266,6 +298,15 @@ namespace BLMS.Context
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("UnitID", id);
+
+                auditLog.SPName = cmd.CommandText.ToString();
+
+                auditLog.OldValue = UnitName;
+                auditLog.NewValue = "-";
+
+                
+            
+                auditDbContext.AddAuditLog(auditLog);
 
                 cmd.ExecuteNonQuery();
                 conn.Close();
@@ -368,6 +409,11 @@ namespace BLMS.Context
         #region CREATE
         public void AddCertBody(CertBody certBody, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "CREATE";
+            auditLog.ScreenPath = "CERT BODY";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -376,6 +422,12 @@ namespace BLMS.Context
 
                 cmd.Parameters.AddWithValue("CertBodyName", certBody.CertBodyName);
                 cmd.Parameters.AddWithValue("UserName", UserName);
+
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = "-";
+                auditLog.NewValue = "Unit Name:" + certBody.CertBodyName + ",\nUsername:" + UserName;
+
+                auditDbContext.AddAuditLog(auditLog);
 
                 cmd.ExecuteNonQuery();
                 conn.Close();
@@ -386,6 +438,12 @@ namespace BLMS.Context
         #region EDIT
         public void EditCertBody(CertBody certBody, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "UPDATE";
+            auditLog.ScreenPath = "CERT BODY";
+            auditLog.CreatedBy = UserName;
+
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -396,6 +454,11 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("CertBodyName", certBody.CertBodyName);
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = certBody.OldCertBodyName;
+                auditLog.NewValue =  "\nUnit Name:" + certBody.CertBodyName + ",\nUsername:" + UserName;
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -403,8 +466,13 @@ namespace BLMS.Context
         #endregion
 
         #region DELETE
-        public void DeleteCertBody(int? id)
+        public void DeleteCertBody(int? id, string CertBodyName, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "DELETE";
+            auditLog.ScreenPath = "CERT BODY";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -412,6 +480,9 @@ namespace BLMS.Context
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("CertBodyID", id);
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = CertBodyName;
+                auditLog.NewValue = "-";
 
                 cmd.ExecuteNonQuery();
                 conn.Close();
@@ -511,6 +582,11 @@ namespace BLMS.Context
         #region CREATE
         public void AddCategory(Category category, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "CREATE";
+            auditLog.ScreenPath = "LICENSE CATEGORY";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -521,6 +597,11 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("Description", category.Description);
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = "-";
+                auditLog.NewValue = "DivID: " + category.CategoryName + ",\nDescription:" + category.Description + ",\nUsername:" + UserName;
+                auditDbContext.AddAuditLog(auditLog);
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -530,6 +611,13 @@ namespace BLMS.Context
         #region EDIT
         public void EditCategory(Category category, string UserName)
         {
+
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "UPDATE";
+            auditLog.ScreenPath = "LICENSE CATEGORY";
+            auditLog.CreatedBy = UserName;
+
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -541,6 +629,11 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("Description", category.Description);
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = category.OldCategoryName + category.OldDesc;
+                auditLog.NewValue = "DivID: " + category.CategoryName + ",\nDescription:" + category.Description + ",\nUsername:" + UserName;
+                auditDbContext.AddAuditLog(auditLog);
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -548,8 +641,13 @@ namespace BLMS.Context
         #endregion
 
         #region DELETE
-        public void DeleteCategory(int? id)
+        public void DeleteCategory(int? id, String CategoryName, String UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "DELETE";
+            auditLog.ScreenPath = "LICENSE CATEGORY";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -557,6 +655,10 @@ namespace BLMS.Context
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("CategoryID", id);
+
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = CategoryName;
+                auditLog.NewValue = "-";
 
                 cmd.ExecuteNonQuery();
                 conn.Close();
@@ -660,6 +762,11 @@ namespace BLMS.Context
         #region CREATE
         public void AddPIC(PIC pic, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "CREATE";
+            auditLog.ScreenPath = "PIC";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -670,6 +777,11 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("PICStaffNo", pic.PICStaffNo);
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = "-";
+                auditLog.NewValue = "UserTypeID: " + pic.UserTypeID + ",\nPICStaffNo:" + pic.PICStaffNo + ",\nUsername:" + UserName;
+                auditDbContext.AddAuditLog(auditLog);
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -679,6 +791,11 @@ namespace BLMS.Context
         #region EDIT
         public void EditPIC(PIC pic, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "UPDATE";
+            auditLog.ScreenPath = "PIC";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -690,6 +807,12 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("PICStaffNo", pic.PICStaffNo);
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = pic.OldUserTypeID + pic.OldPICStaffNo;
+                auditLog.NewValue = "PICID: " + pic.PICID + "UserTypeID: " + pic.UserTypeID + ",\nPICStaffNo:" + pic.PICStaffNo + ",\nUsername:" + UserName;
+                auditDbContext.AddAuditLog(auditLog);
+
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -697,8 +820,13 @@ namespace BLMS.Context
         #endregion
 
         #region DELETE
-        public void DeletePIC(int? id)
+        public void DeletePIC(int? id, String UserType,  String UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "DELETE";
+            auditLog.ScreenPath = "PIC";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -706,6 +834,12 @@ namespace BLMS.Context
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("PICID", id);
+
+
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = UserType;
+                auditLog.NewValue = "-";
+
 
                 cmd.ExecuteNonQuery();
                 conn.Close();
@@ -844,6 +978,11 @@ namespace BLMS.Context
         #region CREATE
         public void AddUserRole(UserRole userRole, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "CREATE";
+            auditLog.ScreenPath = "USER ROLE";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -855,6 +994,11 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("UserTypeID", userRole.UserTypeID);
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = "-";
+                auditLog.NewValue = "UserRoleStaffNo: " + userRole.UserRoleStaffNo + "RoleID: " + userRole.RoleID + ",\nUserTypeID:" + userRole.UserTypeID + ",\nUsername:" + UserName;
+                auditDbContext.AddAuditLog(auditLog);
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -865,6 +1009,11 @@ namespace BLMS.Context
         //Edit User Role
         public void EditUserRole(UserRole userRole, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "UPDATE";
+            auditLog.ScreenPath = "USER ROLE";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -877,6 +1026,11 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("UserTypeID", userRole.UserTypeID);
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = userRole.OldUserRoleStaffNo + userRole.OldUserRoleStaffNo + userRole.OldRoleID ;
+                auditLog.NewValue = "UserRoleStaffNo: " + userRole.UserRoleStaffNo + "RoleID: " + userRole.RoleID + ",\nUserTypeID:" + userRole.UserTypeID + ",\nUsername:" + UserName;
+                auditDbContext.AddAuditLog(auditLog);
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -885,8 +1039,13 @@ namespace BLMS.Context
 
         #region DELETE
         //Delete User Role
-        public void DeleteUserRole(int? id)
+        public void DeleteUserRole(int? id, string UserRoleStaffNo, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "DELETE";
+            auditLog.ScreenPath = "USER ROLE";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -894,6 +1053,10 @@ namespace BLMS.Context
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("UserRoleID", id);
+
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = UserRoleStaffNo;
+                auditLog.NewValue = "-";
 
                 cmd.ExecuteNonQuery();
                 conn.Close();

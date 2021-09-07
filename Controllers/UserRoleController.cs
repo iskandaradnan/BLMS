@@ -339,12 +339,13 @@ namespace BLMS.Controllers
         [Authorize(AccessLevel.ADMINISTRATION)]
         public JsonResult Delete(int Id)
         {
+            string UserName = User.Identity.Name;
 
             try
             {
                 UserRole userRole = dbContext.GetUserRoleByID(Id);
 
-                dbContext.DeleteUserRole(Id);
+                dbContext.DeleteUserRole(Id, userRole.UserRoleStaffNo, UserName);
                 TempData["deleteMessage"] = string.Format("{0} has been deleted from BLMS database!", userRole.UserRoleName);
 
                 return Json(new { status = "Success" });

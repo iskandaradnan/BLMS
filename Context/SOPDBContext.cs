@@ -1,4 +1,6 @@
 ﻿using BLMS.Models.SOP;
+using BLMS.v2.Context;
+using BLMS.v2.Models.Admin;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,6 +14,7 @@ namespace BLMS.Context
     {
         //readonly string connectionstring = "Data Source=EGBS11N10043471;Database=BLMS;User ID = sa; Password=P@ss1234; Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         readonly string connectionstring = "Data Source = 10.249.1.125; Database=BLMSDev;User ID = Appsa; Password=Opuswebsql2017;Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        readonly AuditLogDbContext auditDbContext = new AuditLogDbContext();
 
         #region AUTHORITY LINK
         #region GRIDVIEW
@@ -48,6 +51,13 @@ namespace BLMS.Context
         #region CREATE
         public void AddAuthority(Authority authority, string UserName)
         {
+
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "CREATE";
+            auditLog.ScreenPath = "AUTHORITY";
+            auditLog.CreatedBy = UserName;
+
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -58,6 +68,13 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("AuthorityLink", authority.AuthorityLink);
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = "-";
+                auditLog.NewValue = "\nAuthority Name:" + authority.AuthorityName + "\nAuthority Link:" + authority.AuthorityLink + "\nUsername:" + UserName;
+
+                auditDbContext.AddAuditLog(auditLog);
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -67,6 +84,11 @@ namespace BLMS.Context
         #region EDIT
         public void EditAuthority(Authority authority, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "UPDATE";
+            auditLog.ScreenPath = "AUTHORITY";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -78,6 +100,11 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("AuthorityLink", authority.AuthorityLink);
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = authority.OldAuthorityName + authority.OldAuthorityLink;
+                auditLog.NewValue = "Authority Name:" + authority.AuthorityName + ",\nAuthority Link:" + authority.AuthorityLink;
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -85,8 +112,14 @@ namespace BLMS.Context
         #endregion
 
         #region DELETE
-        public void DeleteAuthority(int? id)
+        public void DeleteAuthority(int? id, string AuthorityName, string UserName)
         {
+
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "DELETE";
+            auditLog.ScreenPath = "AUTHORITY";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -94,6 +127,12 @@ namespace BLMS.Context
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("AuthorityID", id);
+
+
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = AuthorityName;
+                auditLog.NewValue = "-";
+
 
                 cmd.ExecuteNonQuery();
                 conn.Close();

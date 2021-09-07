@@ -61,6 +61,7 @@ namespace BLMS.Controllers
         {
             try
             {
+                
                 string UnitName = businessUnit.UnitName;
                 UserName = HttpContext.User.Identity.Name;
                 List<BusinessUnit> businessDivList;
@@ -259,11 +260,13 @@ namespace BLMS.Controllers
         [Authorize(AccessLevel.ADMINISTRATION)]
         public JsonResult Delete(int Id)
         {
+            string UserName = User.Identity.Name;
+
             try
             {
                 BusinessUnit businessUnit = dbContext.GetBusinessUnitByID(Id);
 
-                dbContext.DeleteBusinessUnit(Id);
+                dbContext.DeleteBusinessUnit(Id, businessUnit.UnitName, UserName);
                 TempData["deleteMessage"] = string.Format("{0} has been successfully deleted!", businessUnit.UnitName);
 
                 return Json(new { status = "Success" });

@@ -1,8 +1,8 @@
 ﻿using BLMS.v2.Models.Admin;
-using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -45,6 +45,29 @@ namespace BLMS.v2.Context
 
             return AuditLogList;
         }
-    
+
+        //Create Audit Log
+        public void AddAuditLog(AuditLog auditlist)
+        {
+
+            using (SqlConnection conn = new SqlConnection(connectionstring))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("spAuditLogAdd", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("Command", auditlist.Command);
+                cmd.Parameters.AddWithValue("SPName", auditlist.SPName);
+                cmd.Parameters.AddWithValue("ScreenPath", auditlist.ScreenPath);
+                cmd.Parameters.AddWithValue("OldValue", auditlist.OldValue);
+                cmd.Parameters.AddWithValue("NewValue", auditlist.NewValue);
+                cmd.Parameters.AddWithValue("CreatedBy", auditlist.CreatedBy);
+
+
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
     }
 }

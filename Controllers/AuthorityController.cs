@@ -178,12 +178,13 @@ namespace BLMS.Controllers
         #region DELETE
         public JsonResult Delete(int Id)
         {
+            string UserName = User.Identity.Name;
 
             try
             {
                 Authority authority = dbContext.GetAuthorityByID(Id);
 
-                dbContext.DeleteAuthority(Id);
+                dbContext.DeleteAuthority(Id, authority.AuthorityName, UserName);
                 TempData["deleteMessage"] = string.Format("{0} has been deleted from BLMS database!", authority.AuthorityName);
 
                 return Json(new { status = "Success" });

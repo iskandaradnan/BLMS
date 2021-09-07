@@ -1,4 +1,6 @@
 ﻿using BLMS.Models.License;
+using BLMS.v2.Context;
+using BLMS.v2.Models.Admin;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,6 +14,8 @@ namespace BLMS.Context
     {
         //readonly string connectionstring = "Data Source=EGBS11N10043471;Database=BLMS;User ID = sa; Password=P@ss1234; Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         readonly string connectionstring = "Data Source = 10.249.1.125; Database=BLMSDev;User ID = Appsa; Password=Opuswebsql2017;Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        readonly AuditLogDbContext auditDbContext = new AuditLogDbContext();
+
 
         #region LICENSE SITE
         #region GRIDVIEW
@@ -59,8 +63,14 @@ namespace BLMS.Context
         #region REGISTER
         public void RegisterLicenseSite(LicenseSite licenseSite, string Issued, string Expired, string UserName)
         {
+                            AuditLog auditLog = new AuditLog();
+                auditLog.Command = "CREATE";
+                auditLog.ScreenPath = "REGISTER LICENSE SITE";
+                auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
+
                 conn.Open();
                 SqlCommand cmd = new SqlCommand("spLicenseSiteRegister", conn);
                 cmd.CommandType = CommandType.StoredProcedure;

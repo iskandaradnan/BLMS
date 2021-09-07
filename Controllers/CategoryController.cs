@@ -194,12 +194,13 @@ namespace BLMS.Controllers
         [Authorize(AccessLevel.ADMINISTRATION)]
         public JsonResult Delete(int Id)
         {
+            string UserName = User.Identity.Name;
 
             try
             {
                 Category category = dbContext.GetCategoryByID(Id);
 
-                dbContext.DeleteCategory(Id);
+                dbContext.DeleteCategory(Id, category.CategoryName, UserName);
                 TempData["deleteMessage"] = string.Format("{0} has been successfully deleted!", category.CategoryName);
 
                 return Json(new { status = "Success" });

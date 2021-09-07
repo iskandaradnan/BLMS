@@ -269,11 +269,13 @@ namespace BLMS.Controllers
         [Authorize(Roles.ADMINISTRATOR)]
         public JsonResult Delete(int Id)
         {
+            string UserName = User.Identity.Name;
+
             try
             {
                 PIC pic = dbContext.GetPICByID(Id);
 
-                dbContext.DeletePIC(Id);
+                dbContext.DeletePIC(Id, pic.UserType, UserName);
 
                 TempData["deleteMessage"] = string.Format("{0} has been successfully deleted!", pic.PICName);
 
