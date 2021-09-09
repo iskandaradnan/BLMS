@@ -63,10 +63,10 @@ namespace BLMS.Context
         #region REGISTER
         public void RegisterLicenseSite(LicenseSite licenseSite, string Issued, string Expired, string UserName)
         {
-                            AuditLog auditLog = new AuditLog();
-                auditLog.Command = "CREATE";
-                auditLog.ScreenPath = "REGISTER LICENSE SITE";
-                auditLog.CreatedBy = UserName;
+           AuditLog auditLog = new AuditLog();
+           auditLog.Command = "CREATE";
+           auditLog.ScreenPath = "REGISTER LICENSE SITE";
+           auditLog.CreatedBy = UserName;
 
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
@@ -96,6 +96,11 @@ namespace BLMS.Context
 
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = "-";
+                auditLog.NewValue = "Unit Name:" + licenseSite.LicenseName + ",\nUsername:" + UserName;
+
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -105,6 +110,12 @@ namespace BLMS.Context
         #region RENEWAL
         public void RenewalLicenseSite(LicenseSite licenseSite, string UserName)
         {
+
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "CREATE";
+            auditLog.ScreenPath = "RENEWAL LICENSE SITE";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -131,6 +142,11 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("Data", licenseSite.Data);
 
                 cmd.Parameters.AddWithValue("UserName", UserName);
+
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = "-";
+                auditLog.NewValue = "Unit Name:" + licenseSite.LicenseName + ",\nUsername:" + UserName;
+
 
                 cmd.ExecuteNonQuery();
                 conn.Close();
@@ -274,6 +290,12 @@ namespace BLMS.Context
         //License Request
         public void RequestLicenseHQ(LicenseHQ licenseHQ, string UserName)
         {
+            AuditLog auditLog = new AuditLog();
+            auditLog.Command = "CREATE";
+            auditLog.ScreenPath = "REQUEST LICENSE HQ SITE";
+            auditLog.CreatedBy = UserName;
+
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -290,6 +312,12 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("Remarks", licenseHQ.Remarks);
 
                 cmd.Parameters.AddWithValue("UserName", UserName);
+
+
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = "-";
+                auditLog.NewValue = "Unit Name:" + licenseHQ.LicenseName + "PIC1 Name:" + licenseHQ.PIC1Name  + ",\nUsername:" + UserName;
+
 
                 cmd.ExecuteNonQuery();
                 conn.Close();

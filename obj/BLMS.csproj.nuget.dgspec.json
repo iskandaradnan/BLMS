@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\azhar.yusof\\Documents\\BLMS\\BLMS.csproj": {}
+    "C:\\Users\\iskandar.adnan\\Documents\\GitHub\\blmscloud\\BLMS\\BLMS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\azhar.yusof\\Documents\\BLMS\\BLMS.csproj": {
+    "C:\\Users\\iskandar.adnan\\Documents\\GitHub\\blmscloud\\BLMS\\BLMS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\azhar.yusof\\Documents\\BLMS\\BLMS.csproj",
+        "projectUniqueName": "C:\\Users\\iskandar.adnan\\Documents\\GitHub\\blmscloud\\BLMS\\BLMS.csproj",
         "projectName": "BLMS",
-        "projectPath": "C:\\Users\\azhar.yusof\\Documents\\BLMS\\BLMS.csproj",
-        "packagesPath": "C:\\Users\\azhar.yusof\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\azhar.yusof\\Documents\\BLMS\\obj\\",
+        "projectPath": "C:\\Users\\iskandar.adnan\\Documents\\GitHub\\blmscloud\\BLMS\\BLMS.csproj",
+        "packagesPath": "C:\\Users\\iskandar.adnan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\iskandar.adnan\\Documents\\GitHub\\blmscloud\\BLMS\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\azhar.yusof\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\iskandar.adnan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -71,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
