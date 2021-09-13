@@ -4,6 +4,7 @@ using BLMS.CustomAttributes;
 using BLMS.Enums;
 using BLMS.Models;
 using BLMS.Models.License;
+using BLMS.v2.Context;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,6 +24,7 @@ namespace BLMS.Controllers
     {
         readonly LicenseDBContext licenseDbContext = new LicenseDBContext();
         readonly ddlLicenseDBContext ddlLicenseDBContext = new ddlLicenseDBContext();
+        readonly AuditLogDbContext logController = new AuditLogDbContext();
 
         private IWebHostEnvironment _env;
 
@@ -118,10 +120,11 @@ namespace BLMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult RequestLicense([Bind] LicenseHQ licenseHQ)
         {
+            string UserName = User.Identity.Name;
+
             try
             {
-                string UserName = User.Identity.Name;
-
+              
                 List<LicenseHQ> categoryLicenseHQList, businessDivLicenseHQList, businessUnitLicenseHQList, PIC2LicenseHQList, PIC3LicenseHQList;
 
                 if (string.IsNullOrEmpty(licenseHQ.PIC1Name))
@@ -290,8 +293,18 @@ namespace BLMS.Controllers
 
                 return View(licenseHQ);
             }
-            catch
+            catch(Exception ex)
             {
+                string path = "LICENSE HQ";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
                 TempData["requestLicenseMessage"] = string.Format("{0} has been successfully requested!", licenseHQ.LicenseName);
                 return RedirectToAction("Index");
             }

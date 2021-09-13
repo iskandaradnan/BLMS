@@ -1,4 +1,5 @@
-﻿using BLMS.v2.Models.Admin;
+﻿using BLMS.Models.Admin;
+using BLMS.v2.Models.Admin;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,10 +12,12 @@ namespace BLMS.v2.Context
     public class AuditLogDbContext
     {
         readonly string connectionstring = "Data Source = 10.249.1.125; Database=BLMSDev;User ID = Appsa; Password=Opuswebsql2017;Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-    
-        public IEnumerable<AuditLog> GetAuditLog()
+
+
+        #region AUDIT LOG
+        public IEnumerable<Log> GetAuditLog()
         {
-            var AuditLogList = new List<AuditLog>();
+            var AuditLogList = new List<Log>();
 
 
             using (SqlConnection conn = new SqlConnection(connectionstring))
@@ -27,7 +30,7 @@ namespace BLMS.v2.Context
 
                 while (dr.Read())
                 {
-                    var auditList = new AuditLog();
+                    var auditList = new Log();
 
                     auditList.Command = dr["Command"].ToString();
                     auditList.SPName = dr["SPName"].ToString();
@@ -47,7 +50,7 @@ namespace BLMS.v2.Context
         }
 
         //Create Audit Log
-        public void AddAuditLog(AuditLog auditlist)
+        public void AddAuditLog(Log auditlist)
         {
 
             using (SqlConnection conn = new SqlConnection(connectionstring))
@@ -68,6 +71,67 @@ namespace BLMS.v2.Context
                 conn.Close();
             }
         }
+        #endregion
 
+        #region ERROR LOG
+
+        public IEnumerable<ErrorLog> GetErrorLog()
+        {
+            var ErrorLogList = new List<ErrorLog>();
+
+
+            using (SqlConnection conn = new SqlConnection(connectionstring))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("spErrorLogGetAll", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    var errorList = new ErrorLog();
+
+                    errorList.PageName = dr["PageName"].ToString();
+                    errorList.ErrorMessage = dr["ErrorMessage"].ToString();
+                    errorList.Method = dr["Method"].ToString();
+                    errorList.LineNumber = dr["LineNumber"].ToString();
+                    errorList.CreatedBy = dr["CreatedBy"].ToString();
+                    errorList.CreatedDt = dr["CreatedDt"].ToString();
+                    
+                    ErrorLogList.Add(errorList);
+
+                }
+
+                conn.Close();
+            }
+
+            return ErrorLogList;
+        }
+
+
+        public void AddErrorLog(string path, string method, Int32 lineNumber, string msg, string UserName)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionstring))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("spErrorLogAdd", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+
+                cmd.Parameters.AddWithValue("PageName", path);
+                cmd.Parameters.AddWithValue("ErrorMessage", msg);
+                cmd.Parameters.AddWithValue("Method", method);
+                cmd.Parameters.AddWithValue("LineNumber", lineNumber);
+                cmd.Parameters.AddWithValue("CreatedBy", UserName);
+
+
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+
+        #endregion
     }
 }

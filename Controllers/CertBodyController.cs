@@ -3,6 +3,7 @@ using BLMS.Custom_Attributes;
 using BLMS.CustomAttributes;
 using BLMS.Enums;
 using BLMS.Models.Admin;
+using BLMS.v2.Context;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace BLMS.Controllers
     public class CertBodyController : Controller
     {
         readonly AdminDBContext dbContext = new AdminDBContext();
+        readonly AuditLogDbContext logController = new AuditLogDbContext();
 
         #region GRIDVIEW
         [Authorize(Roles.ADMINISTRATOR)]
@@ -54,9 +56,11 @@ namespace BLMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind] CertBody certBody)
         {
+            string UserName = HttpContext.User.Identity.Name;
+
             try
             {
-                string UserName = HttpContext.User.Identity.Name;
+               
 
                 if (string.IsNullOrEmpty(certBody.CertBodyName))
                 {
@@ -82,8 +86,19 @@ namespace BLMS.Controllers
 
                 return View(certBody);
             }
-            catch
+            catch(Exception ex)
             {
+                string path = "CERTIFICATE BODY";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
+
                 return View();
             }
         }
@@ -110,9 +125,11 @@ namespace BLMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, [Bind] CertBody certBody)
         {
+            string UserName = HttpContext.User.Identity.Name;
+
             try
             {
-                string UserName = HttpContext.User.Identity.Name;
+                
 
                 if (string.IsNullOrEmpty(certBody.CertBodyName))
                 {
@@ -143,8 +160,18 @@ namespace BLMS.Controllers
 
                 return View(dbContext);
             }
-            catch
+            catch(Exception ex)
             {
+                string path = "CERTIFICATE BODY";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
                 return View();
             }
         }
@@ -166,8 +193,19 @@ namespace BLMS.Controllers
 
                 return Json(new { status = "Success" });
             }
-            catch
+            catch(Exception ex)
             {
+                string path = "CERTIFICATE BODY";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
+
                 return Json(new { status = "Fail" });
             }
         }

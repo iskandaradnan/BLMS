@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BLMS.v2.Models.Admin
 {
-    public class AuditLog
+    public class Log
     {
         public int ID { get; set; }
 

@@ -51,6 +51,12 @@ namespace BLMS.Context
         #region CREATE
         public void AddBusinessDiv(BusinessDiv businessDiv, string UserName)
         {
+            Log auditLog = new Log();
+            auditLog.Command = "CREATE";
+            auditLog.ScreenPath = "BUSINESS DIVISION";
+            auditLog.CreatedBy = UserName;
+
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -59,6 +65,12 @@ namespace BLMS.Context
 
                 cmd.Parameters.AddWithValue("DivName", businessDiv.DivName);
                 cmd.Parameters.AddWithValue("UserName", UserName);
+
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = "-";
+                auditLog.NewValue = "DivID: " + businessDiv.DivID + ",\nUserName:" + UserName;
+
+                auditDbContext.AddAuditLog(auditLog);
 
                 cmd.ExecuteNonQuery();
                 conn.Close();
@@ -69,6 +81,11 @@ namespace BLMS.Context
         #region EDIT
         public void EditBusinessDiv(BusinessDiv businessDiv, string UserName)
         {
+            Log auditLog = new Log();
+            auditLog.Command = "UPDATE";
+            auditLog.ScreenPath = "BUSINESS DIVISION";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -79,6 +96,12 @@ namespace BLMS.Context
                 cmd.Parameters.AddWithValue("DivName", businessDiv.DivName);
                 cmd.Parameters.AddWithValue("UserName", UserName);
 
+                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.OldValue = businessDiv.OldDivName;
+                auditLog.NewValue = "DivID: " + businessDiv.DivID + ",\nDiv Name:" + businessDiv.DivName + "\nUsername:" + UserName;
+
+                auditDbContext.AddAuditLog(auditLog);
+
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
@@ -86,8 +109,13 @@ namespace BLMS.Context
         #endregion
 
         #region DELETE
-        public void DeleteBusinessDiv(int? id)
+        public void DeleteBusinessDiv(int? id, string DivName, string UserName)
         {
+            Log auditLog = new Log();
+            auditLog.Command = "DELETE";
+            auditLog.ScreenPath = "BUSINESS UNIT";
+            auditLog.CreatedBy = UserName;
+
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
@@ -95,6 +123,16 @@ namespace BLMS.Context
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("DivID", id);
+
+                auditLog.SPName = cmd.CommandText.ToString();
+
+                auditLog.OldValue = DivName;
+                auditLog.NewValue = "-";
+
+
+
+                auditDbContext.AddAuditLog(auditLog);
+
 
                 cmd.ExecuteNonQuery();
                 conn.Close();
@@ -222,7 +260,7 @@ namespace BLMS.Context
         #region CREATE
         public void AddBusinessUnit(BusinessUnit businessUnit, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "CREATE";
             auditLog.ScreenPath = "BUSINESS UNIT";
             auditLog.CreatedBy = UserName;
@@ -254,7 +292,7 @@ namespace BLMS.Context
         public void EditBusinessUnit(BusinessUnit businessUnit, string UserName)
         {
 
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "UPDATE";
             auditLog.ScreenPath = "BUSINESS UNIT";
             auditLog.CreatedBy = UserName;
@@ -286,7 +324,7 @@ namespace BLMS.Context
         #region DELETE
         public void DeleteBusinessUnit(int? id, string UnitName, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "DELETE";
             auditLog.ScreenPath = "BUSINESS UNIT";
             auditLog.CreatedBy = UserName;
@@ -409,7 +447,7 @@ namespace BLMS.Context
         #region CREATE
         public void AddCertBody(CertBody certBody, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "CREATE";
             auditLog.ScreenPath = "CERT BODY";
             auditLog.CreatedBy = UserName;
@@ -438,7 +476,7 @@ namespace BLMS.Context
         #region EDIT
         public void EditCertBody(CertBody certBody, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "UPDATE";
             auditLog.ScreenPath = "CERT BODY";
             auditLog.CreatedBy = UserName;
@@ -468,7 +506,7 @@ namespace BLMS.Context
         #region DELETE
         public void DeleteCertBody(int? id, string CertBodyName, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "DELETE";
             auditLog.ScreenPath = "CERT BODY";
             auditLog.CreatedBy = UserName;
@@ -582,7 +620,7 @@ namespace BLMS.Context
         #region CREATE
         public void AddCategory(Category category, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "CREATE";
             auditLog.ScreenPath = "LICENSE CATEGORY";
             auditLog.CreatedBy = UserName;
@@ -612,7 +650,7 @@ namespace BLMS.Context
         public void EditCategory(Category category, string UserName)
         {
 
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "UPDATE";
             auditLog.ScreenPath = "LICENSE CATEGORY";
             auditLog.CreatedBy = UserName;
@@ -643,7 +681,7 @@ namespace BLMS.Context
         #region DELETE
         public void DeleteCategory(int? id, String CategoryName, String UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "DELETE";
             auditLog.ScreenPath = "LICENSE CATEGORY";
             auditLog.CreatedBy = UserName;
@@ -762,7 +800,7 @@ namespace BLMS.Context
         #region CREATE
         public void AddPIC(PIC pic, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "CREATE";
             auditLog.ScreenPath = "PIC";
             auditLog.CreatedBy = UserName;
@@ -791,7 +829,7 @@ namespace BLMS.Context
         #region EDIT
         public void EditPIC(PIC pic, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "UPDATE";
             auditLog.ScreenPath = "PIC";
             auditLog.CreatedBy = UserName;
@@ -822,7 +860,7 @@ namespace BLMS.Context
         #region DELETE
         public void DeletePIC(int? id, String UserType,  String UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "DELETE";
             auditLog.ScreenPath = "PIC";
             auditLog.CreatedBy = UserName;
@@ -978,7 +1016,7 @@ namespace BLMS.Context
         #region CREATE
         public void AddUserRole(UserRole userRole, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "CREATE";
             auditLog.ScreenPath = "USER ROLE";
             auditLog.CreatedBy = UserName;
@@ -1009,7 +1047,7 @@ namespace BLMS.Context
         //Edit User Role
         public void EditUserRole(UserRole userRole, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "UPDATE";
             auditLog.ScreenPath = "USER ROLE";
             auditLog.CreatedBy = UserName;
@@ -1041,7 +1079,7 @@ namespace BLMS.Context
         //Delete User Role
         public void DeleteUserRole(int? id, string UserRoleStaffNo, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "DELETE";
             auditLog.ScreenPath = "USER ROLE";
             auditLog.CreatedBy = UserName;

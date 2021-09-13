@@ -52,7 +52,7 @@ namespace BLMS.Context
         public void AddAuthority(Authority authority, string UserName)
         {
 
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "CREATE";
             auditLog.ScreenPath = "AUTHORITY";
             auditLog.CreatedBy = UserName;
@@ -84,7 +84,7 @@ namespace BLMS.Context
         #region EDIT
         public void EditAuthority(Authority authority, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "UPDATE";
             auditLog.ScreenPath = "AUTHORITY";
             auditLog.CreatedBy = UserName;
@@ -115,7 +115,7 @@ namespace BLMS.Context
         public void DeleteAuthority(int? id, string AuthorityName, string UserName)
         {
 
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "DELETE";
             auditLog.ScreenPath = "AUTHORITY";
             auditLog.CreatedBy = UserName;

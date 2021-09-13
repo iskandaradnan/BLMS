@@ -3,6 +3,7 @@ using BLMS.Custom_Attributes;
 using BLMS.CustomAttributes;
 using BLMS.Enums;
 using BLMS.Models.Admin;
+using BLMS.v2.Context;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace BLMS.Controllers
     {
         readonly AdminDBContext dbContext = new AdminDBContext();
         readonly ddlAdminDBContext ddlDBContext = new ddlAdminDBContext();
+        readonly AuditLogDbContext logController = new AuditLogDbContext();
 
         #region GRIDVIEW
         [Authorize(Roles.ADMINISTRATOR)]
@@ -59,10 +61,11 @@ namespace BLMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind] BusinessDiv businessDiv)
         {
+            string UserName = HttpContext.User.Identity.Name;
+
             try
             {
-                string UserName = HttpContext.User.Identity.Name;
-
+                
                 if (string.IsNullOrEmpty(businessDiv.DivName))
                 {
                     ModelState.AddModelError("", "Please type Business Division");
@@ -89,8 +92,20 @@ namespace BLMS.Controllers
 
                 return View(businessDiv);
             }
-            catch
+            catch(Exception ex)
             {
+
+                string path = "BUSINESS DIVISION";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
+
                 return View();
             }
         }
@@ -117,9 +132,11 @@ namespace BLMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, [Bind] BusinessDiv businessDiv)
         {
+            string UserName = HttpContext.User.Identity.Name;
+
             try
             {
-                string UserName = HttpContext.User.Identity.Name;
+
 
                 if (string.IsNullOrEmpty(businessDiv.DivName))
                 {
@@ -153,8 +170,19 @@ namespace BLMS.Controllers
 
                 return View(dbContext);
             }
-            catch
+            catch(Exception ex)
             {
+                string path = "BUSINESS DIVISION";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
+
                 return View();
             }
         }
@@ -165,6 +193,7 @@ namespace BLMS.Controllers
         [Authorize(AccessLevel.ADMINISTRATION)]
         public JsonResult Delete(int Id)
         {
+            string UserName = HttpContext.User.Identity.Name;
 
             try
             {
@@ -177,14 +206,26 @@ namespace BLMS.Controllers
                 }
                 else
                 {
-                    dbContext.DeleteBusinessDiv(Id);
+
+                    dbContext.DeleteBusinessDiv(Id, businessDiv.DivName, UserName);
                     TempData["deleteMessage"] = string.Format("{0} has been deleted from BLMS database!", businessDiv.DivName);
                 }
 
                 return Json(new { status = "Success" });
             }
-            catch
+            catch(Exception ex)
             {
+
+                string path = "BUSINESS DIVISION";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
                 return Json(new { status = "Fail" });
             }
         }

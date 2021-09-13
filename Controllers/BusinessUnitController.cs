@@ -3,6 +3,7 @@ using BLMS.Custom_Attributes;
 using BLMS.CustomAttributes;
 using BLMS.Enums;
 using BLMS.Models.Admin;
+using BLMS.v2.Context;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace BLMS.Controllers
     {
         readonly AdminDBContext dbContext = new AdminDBContext();
         readonly ddlAdminDBContext ddlDBContext = new ddlAdminDBContext();
+        readonly AuditLogDbContext logController = new AuditLogDbContext();
 
         #region GRIDVIEW
         [Authorize(Roles.ADMINISTRATOR)]
@@ -135,8 +137,18 @@ namespace BLMS.Controllers
 
                 return View(businessUnit);
             }
-            catch
+            catch(Exception ex)
             {
+                string path = "BUSINESS UNIT";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
                 return View();
             }
         }

@@ -124,7 +124,6 @@ C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\scopedc
 C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\BLMS.TagHelpers.input.cache
 C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\BLMS.TagHelpers.output.cache
 C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\BLMS.RazorCoreGenerate.cache
-C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\Razor\Views\AuditLog\Index.cshtml.g.cs
 C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\Razor\Views\Authority\Create.cshtml.g.cs
 C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\Razor\Views\Authority\Edit.cshtml.g.cs
 C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\Razor\Views\Authority\Index.cshtml.g.cs
@@ -173,3 +172,4 @@ C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\ref\BLM
 C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\BLMS.pdb
 C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\BLMS.genruntimeconfig.cache
 C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\BLMS.csproj.AssemblyReference.cache
+C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\Razor\Views\Log\Index.cshtml.g.cs

@@ -3,6 +3,7 @@ using BLMS.Custom_Attributes;
 using BLMS.CustomAttributes;
 using BLMS.Enums;
 using BLMS.Models.SOP;
+using BLMS.v2.Context;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace BLMS.Controllers
     public class AuthorityController : Controller
     {
         readonly SOPDBContext dbContext = new SOPDBContext();
+        readonly AuditLogDbContext logController = new AuditLogDbContext();
+
 
         #region GRIDVIEW
         [Authorize(Roles.ADMINISTRATOR, Roles.BUSINESS_UNIT, Roles.PIC)]
@@ -52,9 +55,11 @@ namespace BLMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind] Authority authority)
         {
+            string UserName = HttpContext.User.Identity.Name;
+
             try
             {
-                string UserName = HttpContext.User.Identity.Name;
+               
 
                 if (string.IsNullOrEmpty(authority.AuthorityName) && string.IsNullOrEmpty(authority.AuthorityLink))
                 {
@@ -93,8 +98,18 @@ namespace BLMS.Controllers
 
                 return View(authority);
             }
-            catch
+            catch(Exception ex)
             {
+                string path = "AUTHORITY";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
                 return View();
             }
         }
@@ -119,9 +134,11 @@ namespace BLMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, [Bind] Authority authority)
         {
+            string UserName = HttpContext.User.Identity.Name;
+
             try
             {
-                string UserName = HttpContext.User.Identity.Name;
+                
 
                 if (string.IsNullOrEmpty(authority.AuthorityName) && string.IsNullOrEmpty(authority.AuthorityLink))
                 {
@@ -168,8 +185,18 @@ namespace BLMS.Controllers
 
                 return View(dbContext);
             }
-            catch
+            catch(Exception ex)
             {
+                string path = "AUTHORITY";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
                 return View();
             }
         }
@@ -189,8 +216,19 @@ namespace BLMS.Controllers
 
                 return Json(new { status = "Success" });
             }
-            catch
+            catch(Exception ex)
             {
+                string path = "AUTHORITY";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
+
                 return Json(new { status = "Fail" });
             }
         }

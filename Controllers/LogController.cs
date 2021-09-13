@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace BLMS.v2.Controllers
 {
-    public class AuditLogController : Controller
+    public class LogController : Controller
     {
         readonly AuditLogDbContext dbContext = new AuditLogDbContext();
 
         public IActionResult Index()
         {
-            List<AuditLog> AuditLogList = dbContext.GetAuditLog().ToList();
+            List<Log> AuditLogList = dbContext.GetAuditLog().ToList();
 
             return View(AuditLogList);
         }

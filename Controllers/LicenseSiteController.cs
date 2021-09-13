@@ -4,6 +4,7 @@ using BLMS.CustomAttributes;
 using BLMS.Enums;
 using BLMS.Models;
 using BLMS.Models.License;
+using BLMS.v2.Context;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace BLMS.Controllers
     {
         readonly LicenseDBContext licenseDbContext = new LicenseDBContext();
         readonly ddlLicenseDBContext ddlLicenseDBContext = new ddlLicenseDBContext();
+        readonly AuditLogDbContext logController = new AuditLogDbContext();
 
         private IWebHostEnvironment _env;
 
@@ -104,9 +106,11 @@ namespace BLMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register([Bind] LicenseSite licenseSite, List<IFormFile> LicenseFile)
         {
+            string UserName = HttpContext.User.Identity.Name;
+
             try
             {
-                string UserName = HttpContext.User.Identity.Name;
+                
 
                 DateTime issuedDT = Convert.ToDateTime(licenseSite.IssuedDT);
                 DateTime expiredDT = Convert.ToDateTime(licenseSite.ExpiredDT);
@@ -359,10 +363,11 @@ namespace BLMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Renewal(int id, [Bind] LicenseSite licenseSite, List<IFormFile> RenewalLicenseFile)
         {
+            string UserName = HttpContext.User.Identity.Name;
+
             try
             {
-                string UserName = HttpContext.User.Identity.Name;
-
+                
                 List<LicenseSite> categoryLicenseSiteList, businessDivLicenseSiteList, businessUnitLicenseSiteList, PIC2LicenseSiteList, PIC3LicenseSiteList;
 
                 foreach (var licenseFile in RenewalLicenseFile)
@@ -462,8 +467,19 @@ namespace BLMS.Controllers
 
                 return View(licenseSite);
             }
-            catch
+            catch(Exception ex)
             {
+                string path = "LICENSE SITE";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
+
                 return View();
             }
         }

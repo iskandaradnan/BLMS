@@ -63,7 +63,7 @@ namespace BLMS.Context
         #region REGISTER
         public void RegisterLicenseSite(LicenseSite licenseSite, string Issued, string Expired, string UserName)
         {
-           AuditLog auditLog = new AuditLog();
+           Log auditLog = new Log();
            auditLog.Command = "CREATE";
            auditLog.ScreenPath = "REGISTER LICENSE SITE";
            auditLog.CreatedBy = UserName;
@@ -111,7 +111,7 @@ namespace BLMS.Context
         public void RenewalLicenseSite(LicenseSite licenseSite, string UserName)
         {
 
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "CREATE";
             auditLog.ScreenPath = "RENEWAL LICENSE SITE";
             auditLog.CreatedBy = UserName;
@@ -290,7 +290,7 @@ namespace BLMS.Context
         //License Request
         public void RequestLicenseHQ(LicenseHQ licenseHQ, string UserName)
         {
-            AuditLog auditLog = new AuditLog();
+            Log auditLog = new Log();
             auditLog.Command = "CREATE";
             auditLog.ScreenPath = "REQUEST LICENSE HQ SITE";
             auditLog.CreatedBy = UserName;
