@@ -17,7 +17,7 @@ namespace BLMS.Controllers
     {
         readonly SOPDBContext dbContext = new SOPDBContext();
         readonly AuditLogDbContext logController = new AuditLogDbContext();
-
+         
 
         #region GRIDVIEW
         [Authorize(Roles.ADMINISTRATOR, Roles.BUSINESS_UNIT, Roles.PIC)]
@@ -110,7 +110,7 @@ namespace BLMS.Controllers
 
                 logController.AddErrorLog(path, method, lineNumber, msg, UserName);
 
-                return View();
+                return View(); 
             }
         }
         #endregion

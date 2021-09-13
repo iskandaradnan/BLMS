@@ -313,7 +313,7 @@ namespace BLMS.Controllers
 
                 System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
 
-                string msg = ex.Message;
+                string msg = ex.Message; 
                 string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
                 Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
 

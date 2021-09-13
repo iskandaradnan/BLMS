@@ -260,8 +260,18 @@ namespace BLMS.Controllers
 
                 return View(dbContext);
             }
-            catch
+            catch(Exception ex)
             {
+                string path = "BUSINESS UNIT";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
                 return View();
             }
         }
@@ -283,8 +293,18 @@ namespace BLMS.Controllers
 
                 return Json(new { status = "Success" });
             }
-            catch
+            catch(Exception ex)
             {
+                string path = "BUSINESS UNIT";
+
+                System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(ex, true);
+
+                string msg = ex.Message;
+                string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+                Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+
                 return Json(new { status = "Fail" });
             }
         }

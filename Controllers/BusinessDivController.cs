@@ -226,7 +226,7 @@ namespace BLMS.Controllers
 
                 logController.AddErrorLog(path, method, lineNumber, msg, UserName);
 
-                return Json(new { status = "Fail" });
+                return Json(new { status = "Fail" }); 
             }
         }
         #endregion

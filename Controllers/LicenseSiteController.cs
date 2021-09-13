@@ -477,7 +477,7 @@ namespace BLMS.Controllers
                 string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
                 Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
 
-                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName); 
 
 
                 return View();

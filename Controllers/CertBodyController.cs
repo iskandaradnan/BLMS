@@ -172,7 +172,7 @@ namespace BLMS.Controllers
 
                 logController.AddErrorLog(path, method, lineNumber, msg, UserName);
 
-                return View();
+                return View(); 
             }
         }
         #endregion

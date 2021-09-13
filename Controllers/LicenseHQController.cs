@@ -303,7 +303,7 @@ namespace BLMS.Controllers
                 string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
                 Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
 
-                logController.AddErrorLog(path, method, lineNumber, msg, UserName);
+                logController.AddErrorLog(path, method, lineNumber, msg, UserName); 
 
                 TempData["requestLicenseMessage"] = string.Format("{0} has been successfully requested!", licenseHQ.LicenseName);
                 return RedirectToAction("Index");
