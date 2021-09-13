@@ -7,7 +7,7 @@ namespace BLMS.Models.Admin
 {
     public class ErrorLog
     {
-
+         
         public int ID { get; set; }
 
         public string PageName { get; set; }
