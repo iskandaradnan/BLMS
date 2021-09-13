@@ -77,7 +77,7 @@ namespace BLMS.v2.Context
 
         public IEnumerable<ErrorLog> GetErrorLog()
         {
-            var ErrorLogList = new List<ErrorLog>();
+            var ErrorLogList = new List<ErrorLog>(); 
 
 
             using (SqlConnection conn = new SqlConnection(connectionstring))
