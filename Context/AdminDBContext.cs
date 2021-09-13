@@ -124,7 +124,7 @@ namespace BLMS.Context
 
                 cmd.Parameters.AddWithValue("DivID", id);
 
-                auditLog.SPName = cmd.CommandText.ToString();
+                auditLog.SPName = cmd.CommandText.ToString(); 
 
                 auditLog.OldValue = DivName;
                 auditLog.NewValue = "-";
