@@ -1,12 +1,13 @@
-﻿using BLMS.v2.Context;
-using BLMS.v2.Models.Admin;
+﻿using BLMS.Models.Admin;
+using BLMS.v2.Context;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BLMS.v2.Controllers
+namespace BLMS.Controllers
 {
     public class LogController : Controller
     {
@@ -14,9 +15,14 @@ namespace BLMS.v2.Controllers
 
         public IActionResult Index()
         {
-            List<Log> AuditLogList = dbContext.GetAuditLog().ToList();
 
-            return View(AuditLogList);
+            AuditErrorViewModel aevm = new AuditErrorViewModel();
+
+            aevm.auditLog = dbContext.GetAuditLog().ToList();
+            aevm.errorLog = dbContext.GetErrorLog().ToList();
+
+            return View(aevm);          
         }
+
     }
 }

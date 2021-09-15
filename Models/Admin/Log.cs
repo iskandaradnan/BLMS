@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BLMS.v2.Models.Admin
+namespace BLMS.Models.Admin
 {
     public class Log
     {

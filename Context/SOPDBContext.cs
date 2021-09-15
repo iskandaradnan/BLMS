@@ -1,6 +1,6 @@
-﻿using BLMS.Models.SOP;
+﻿using BLMS.Models.Admin;
+using BLMS.Models.SOP;
 using BLMS.v2.Context;
-using BLMS.v2.Models.Admin;
 using System;
 using System.Collections.Generic;
 using System.Data;

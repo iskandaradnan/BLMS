@@ -173,3 +173,4 @@ C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\BLMS.pd
 C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\BLMS.genruntimeconfig.cache
 C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\BLMS.csproj.AssemblyReference.cache
 C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\Razor\Views\Log\Index.cshtml.g.cs
+C:\Users\iskandar.adnan\Documents\GitHub\blmscloud\BLMS\obj\Debug\net5.0\Razor\Views\Log\Error.cshtml.g.cs

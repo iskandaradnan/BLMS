@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BLMS.v2.Models.Admin.Log>
+﻿@model BLMS.Models.Admin.AuditErrorViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -22,114 +22,210 @@
                     </ol>
                 </div>
 
-                <ul class="nav nav-tabs" id="auditerrorTab" role="tablist">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item waves-effect waves-light">
-                        <a class="nav-link" id="audit-tab" data-toggle="tab" href="#auditlog" role="tab" aria-controls="audit" aria-selected="false">Audit Log</a>
+                        <a class="nav-link active" id="audit-tab" data-toggle="tab" href="#auditlog" role="tab" aria-controls="auditlog" aria-selected="false">Audit Log</a>
                     </li>
                     <li class="nav-item waves-effect waves-light">
-                        <a class="nav-link" id="error-tab" data-toggle="tab" href="#errorlog" role="tab" aria-controls="error" aria-selected="false">Error Log</a>
-                    </li> 
+                        <a class="nav-link" id="error-tab" data-toggle="tab" href="#errorlog" role="tab" aria-controls="errorlog" aria-selected="false">Error Log</a>
+                    </li>
                 </ul>
 
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active show" id="auditlog" role="tabpanel" aria-labelledby="audit-tab">
+                        <!-- Main content -->
+                        <section class="content">
+                            <!-- Default box -->
+                            <div class="card">
+                                <div class="card-body">
+                                    <table id="auditlog" class="table table-bordered" style="width:100%">
+                                        <thead class="text-center table-active">
+                                            <tr>
+                                                <th class="text-sm align-text-top col-md-1">
+                                                    No.
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.auditLog[0].Command)
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.auditLog[0].SPName)
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.auditLog[0].ScreenPath)
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.auditLog[0].OldValue)
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.auditLog[0].NewValue)
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.auditLog[0].CreatedBy)
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.auditLog[0].CreatedDt)
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center">
+
+                                            @{
+                                                int i = 1;
+
+                                                foreach (var item in Model.auditLog)
+                                                {
+                                                    <tr>
+                                                        <td class="text-sm">
+                                                            @i
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.Command)
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.SPName)
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.ScreenPath)
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.OldValue)
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.NewValue)
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.CreatedBy)
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.CreatedDt)
+                                                        </td>
+
+
+
+                                                    </tr>
+
+                                                    i++;
+                                                }
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </section>
+                    </div>
+                    <div class="tab-pane fade" id="errorlog" role="tabpanel" aria-labelledby="error-tab">
+                        <!-- Main content -->
+                        <section class="content">
+                            <!-- Default box -->
+                            <div class="card">
+                                <div class="card-body">
+                                    <table id="errorlog" class="table table-bordered" style="width:100%">
+                                        <thead class="text-center table-active">
+                                            <tr>
+                                                <th class="text-sm align-text-top col-md-1">
+                                                    No.
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.errorLog[0].PageName)
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.errorLog[0].ErrorMessage)
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.errorLog[0].Method)
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.errorLog[0].LineNumber)
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.errorLog[0].CreatedBy)
+                                                </th>
+
+                                                <th class="text-sm align-text-top col-md-2">
+                                                    @Html.DisplayNameFor(model => model.errorLog[0].CreatedDt)
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center">
+
+                                            @{
+                                                int i2 = 1;
+
+                                                foreach (var item in Model.errorLog)
+                                                {
+                                                    <tr>
+                                                        <td class="text-sm">
+                                                            @i2
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.PageName)
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.ErrorMessage)
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.Method)
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.LineNumber)
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.CreatedBy)
+                                                        </td>
+
+                                                        <td class="text-sm">
+                                                            @Html.DisplayFor(modelItem => item.CreatedDt)
+                                                        </td>
+
+
+
+                                                    </tr>
+
+                                                    i2++;
+                                                }
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
             </div>
         </div>
+
     </section>
-
-    <!-- Main content -->
-    <section class="content">
-        <!-- Default box -->
-        <div class="card">
-            <div class="card-body">
-                <table id="auditlog" class="table table-bordered" style="width:100%">
-                    <thead class="text-center table-active">
-                        <tr>
-                            <th class="text-sm align-text-top col-md-1">
-                                No.
-                            </th>
-
-                            <th class="text-sm align-text-top col-md-2">
-                                @Html.DisplayNameFor(model => model.Command)
-                            </th>
-
-                            <th class="text-sm align-text-top col-md-2">
-                                @Html.DisplayNameFor(model => model.SPName)
-                            </th>
-
-                            <th class="text-sm align-text-top col-md-2">
-                                @Html.DisplayNameFor(model => model.ScreenPath)
-                            </th>
-
-                            <th class="text-sm align-text-top col-md-2">
-                                @Html.DisplayNameFor(model => model.OldValue)
-                            </th>
-
-                            <th class="text-sm align-text-top col-md-2">
-                                @Html.DisplayNameFor(model => model.NewValue)
-                            </th>
-
-                            <th class="text-sm align-text-top col-md-2">
-                                @Html.DisplayNameFor(model => model.CreatedBy)
-                            </th>
-
-                            <th class="text-sm align-text-top col-md-2">
-                                @Html.DisplayNameFor(model => model.CreatedDt)
-                            </th>
-
-                        </tr>
-                    </thead>
-                    <tbody class="text-center">
-
-                        @{
-                        int i = 1;
-
-                            foreach (var item in Model)
-                            {
-                             <tr>
-                               <td class="text-sm">
-                                  @i
-                                </td>
-
-                               <td class="text-sm">
-                                   @Html.DisplayFor(modelItem => item.Command)
-                               </td>     
-                                 
-                               <td class="text-sm">
-                                   @Html.DisplayFor(modelItem => item.SPName)
-                               </td>   
-                                 
-                               <td class="text-sm">
-                                   @Html.DisplayFor(modelItem => item.ScreenPath)
-                               </td>
-                                                    
-                               <td class="text-sm">
-                                   @Html.DisplayFor(modelItem => item.OldValue)
-                               </td>
-
-                               <td class="text-sm">
-                                   @Html.DisplayFor(modelItem => item.NewValue)
-                               </td>                    
-
-                               <td class="text-sm">
-                                   @Html.DisplayFor(modelItem => item.CreatedBy)
-                               </td>                    
-
-                               <td class="text-sm">
-                                    @Html.DisplayFor(modelItem => item.CreatedDt)
-                               </td>
-                                                 
-
-
-                              </tr>
-
-                                i++;
-                            }
-                        }
-                        
-                    </tbody>
-                </table>
-            </div>
-           
-        </div>
 
         @if (ViewBag.Message != null)
         {
@@ -140,5 +236,4 @@
             </script>
         }
 
-    </section>
 </div>
